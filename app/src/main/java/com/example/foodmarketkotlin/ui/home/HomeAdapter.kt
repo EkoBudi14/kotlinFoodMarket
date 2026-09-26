@@ -3,57 +3,53 @@ package com.example.foodmarketkotlin.ui.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.foodmarketkotlin.R
-import com.example.foodmarketkotlin.data.model.dummy.HomeModel
+import com.bumptech.glide.Glide
+import com.example.foodmarketkotlin.data.model.response.Product
+import com.example.foodmarketkotlin.databinding.ItemHomeHorizontalBinding
 
 class HomeAdapter(
-    private val listData : List<HomeModel>,
-    private val itemAdapterCallback : ItemAdapterCallback
+    private var productList: ArrayList<Product> = ArrayList(),
+    private val itemAdapterCallback: ItemAdapterCallback
 ) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view  = layoutInflater.inflate(R.layout.item_home_horizontal, parent, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val binding = ItemHomeHorizontalBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        )
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: HomeAdapter.ViewHolder, position: Int) {
-        holder.bind(listData[position], itemAdapterCallback)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(productList[position], itemAdapterCallback)
     }
 
+    override fun getItemCount(): Int = productList.size
 
-    override fun getItemCount(): Int {
-        return listData.size
+    fun setData(newList: List<Product>) {
+        productList.clear()
+        productList.addAll(newList)
+        notifyDataSetChanged()
     }
 
+    class ViewHolder(private val binding: ItemHomeHorizontalBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        // ✅ LEBIH BAIK: findViewById sekali saja di init
-        private val tvTitle: TextView = itemView.findViewById(R.id.tvTitleItem)
-        private val rbFood: RatingBar = itemView.findViewById(R.id.rbFood)
-        private val ivPoster: ImageView = itemView.findViewById(R.id.ivPoster)
+        fun bind(data: Product, callback: ItemAdapterCallback) {
+            binding.tvTitleItem.text = data.title
+            binding.rbFood.rating = data.rating.toFloat()
 
-        fun bind(data: HomeModel, itemAdapterCallback: ItemAdapterCallback) {
-            // Langsung pakai, tidak perlu findViewById lagi
-            tvTitle.text = data.title
-            rbFood.rating = data.rating
-
-//            Glide.with(itemView.context).load(data.src).into(ivPoster)
+            Glide.with(itemView.context)
+                .load(data.thumbnail)
+                .into(binding.ivPoster)
 
             itemView.setOnClickListener {
-                itemAdapterCallback.onCLick(it, data)
+                callback.onClick(it, data)
             }
         }
     }
 
     interface ItemAdapterCallback {
-        fun onCLick(v: View, data:HomeModel)
+        fun onClick(v: View, data: Product)
     }
-
-
 }
