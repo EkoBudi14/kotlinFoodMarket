@@ -34,9 +34,16 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as DetailActivity).toolbarDetail()
         setData()
+        navigateButton()
+
+    }
+
+    private fun navigateButton() {
+        binding.tvBackButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         binding.btnOrderNowDetail.setOnClickListener {
-            Toast.makeText(requireContext(), "fromArgs = $productData", Toast.LENGTH_LONG).show()
 
             val bundle = bundleOf("product" to productData )
             findNavController().navigate(R.id.action_payment, bundle)

@@ -48,9 +48,6 @@ class PaymentFragment : Fragment() {
     private fun setData() {
         productData = arguments?.parcelableOrNull<Product>("product")
             ?: IntentCompat.getParcelableExtra(requireActivity().intent, "foodResponse", Product::class.java)
-        val fromArgs = arguments?.parcelableOrNull<Product>("product")
-        Toast.makeText(requireContext(), "fromArgs = $fromArgs", Toast.LENGTH_LONG).show()
-
 
         val auth = Firebase.auth
         val db = Firebase.firestore
@@ -73,6 +70,7 @@ class PaymentFragment : Fragment() {
 
         if (currentUser != null) {
             db.collection("users").document(currentUser).addSnapshotListener { document, error ->
+
                 if (error != null) {
                     Toast.makeText(context, "Gagal mengambil data: ${error.message}", Toast.LENGTH_SHORT).show()
                     return@addSnapshotListener
