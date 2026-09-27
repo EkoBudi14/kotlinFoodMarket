@@ -40,7 +40,7 @@ class DetailFragment : Fragment() {
 
     private fun navigateButton() {
         binding.tvBackButton.setOnClickListener {
-            findNavController().navigateUp()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnOrderNowDetail.setOnClickListener {

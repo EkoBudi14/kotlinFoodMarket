@@ -46,8 +46,10 @@ class PaymentFragment : Fragment() {
 
 
     private fun setData() {
+//        productData = arguments?.parcelableOrNull<Product>("product")
+//            ?: IntentCompat.getParcelableExtra(requireActivity().intent, "foodResponse", Product::class.java)
+
         productData = arguments?.parcelableOrNull<Product>("product")
-            ?: IntentCompat.getParcelableExtra(requireActivity().intent, "foodResponse", Product::class.java)
 
         val auth = Firebase.auth
         val db = Firebase.firestore

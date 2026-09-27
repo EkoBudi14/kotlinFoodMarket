@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodmarketkotlin.databinding.FragmentHomeNewTasteBinding
 import com.example.foodmarketkotlin.data.model.dummy.HomeVerticalModel
+import com.example.foodmarketkotlin.data.model.response.Product
 import com.example.foodmarketkotlin.ui.detail.DetailActivity
 import com.example.foodmarketkotlin.ui.home.newtaste.HomeNewTasteAdapter
 
@@ -37,10 +38,10 @@ class HomePopularFragment : Fragment(), HomeNewTasteAdapter.ItemAdapterCallback 
         super.onActivityCreated(savedInstanceState)
 
         initDataDummy()
-        var adapter = HomeNewTasteAdapter(foodList, this)
-        var layoutManager : RecyclerView.LayoutManager = LinearLayoutManager(activity)
-        binding.rcList.layoutManager = layoutManager
-        binding.rcList.adapter = adapter
+//        var adapter = HomeNewTasteAdapter(foodList, this)
+//        var layoutManager : RecyclerView.LayoutManager = LinearLayoutManager(activity)
+//        binding.rcList.layoutManager = layoutManager
+//        binding.rcList.adapter = adapter
     }
 
     override fun onDestroyView() {
@@ -54,7 +55,7 @@ class HomePopularFragment : Fragment(), HomeNewTasteAdapter.ItemAdapterCallback 
         foodList.add(HomeVerticalModel("Bakwan Cihuy", "Rp 15.000", src = "" ,3f))
     }
 
-    override fun onCLick(v: View, data: HomeVerticalModel) {
+    override fun onCLick(v: View, data: Product) {
         val detail = Intent(activity, DetailActivity::class.java)
         startActivity(detail)
     }
