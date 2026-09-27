@@ -1,4 +1,4 @@
-package com.example.foodmarketkotlin.ui.home.newtaste
+package com.example.foodmarketkotlin.ui.home.popular
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +8,10 @@ import com.bumptech.glide.Glide
 import com.example.foodmarketkotlin.data.model.response.Product
 import com.example.foodmarketkotlin.databinding.ItemHomeVerticalBinding
 
-class HomeNewTasteAdapter(
+class HomeRecomendedAdapter(
     private var productList: ArrayList<Product> = ArrayList(),
     private val itemAdapterCallback: ItemAdapterCallback
-) : RecyclerView.Adapter<HomeNewTasteAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<HomeRecomendedAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemHomeVerticalBinding.inflate(

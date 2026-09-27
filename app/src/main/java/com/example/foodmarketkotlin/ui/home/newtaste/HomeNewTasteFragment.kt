@@ -84,17 +84,13 @@ class HomeNewTasteFragment : Fragment(), HomeNewTasteAdapter.ItemAdapterCallback
         }
     }
 
-//    private fun setupViewPager() {
-//        var adapter = HomeNewTasteAdapter(foodList, this)
-//        var layoutManager : RecyclerView.LayoutManager = LinearLayoutManager(activity)
-//        binding.rcListVertical.layoutManager = layoutManager
-//        binding.rcListVertical.adapter = adapter
-//    }
 
 
-    override fun onCLick(v: View, data: Product) {
-        val detail = Intent(activity, DetailActivity::class.java)
-        startActivity(detail)
+    override fun onClick(v: View, data: Product) {
+        val intent = Intent(activity, DetailActivity::class.java).apply {
+            putExtra("foodResponse", data)
+        }
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
