@@ -35,7 +35,6 @@ class ProfileMenuAdapter(
         private val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
 
         fun bind(data: ProfileMenuModel, itemAdapterCallback: ItemAdapterCallback) {
-            // Langsung pakai, tidak perlu findViewById lagi
             tvTitle.text = data.title
 
             itemView.setOnClickListener {

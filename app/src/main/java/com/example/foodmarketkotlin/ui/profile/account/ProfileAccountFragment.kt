@@ -1,11 +1,12 @@
 package com.example.foodmarketkotlin.ui.profile.account
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodmarketkotlin.R
@@ -51,6 +52,10 @@ class ProfileAccountFragment : Fragment(), ProfileMenuAdapter.ItemAdapterCallbac
     }
 
     override fun onCLick(v: View, data: ProfileMenuModel) {
-        Toast.makeText(requireContext(), "Clicked: ${data.title}", Toast.LENGTH_SHORT).show()
+        if (data.title == "Edit Profile") {
+            Navigation.findNavController(v).navigate(R.id.profileEditFragment)
+        } else {
+            Toast.makeText(requireContext(), "Clicked: ${data.title}", Toast.LENGTH_SHORT).show()
+        }
     }
 }

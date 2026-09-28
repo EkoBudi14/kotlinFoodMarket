@@ -1,19 +1,19 @@
 package com.example.foodmarketkotlin.ui.detail
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.IntentCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.foodmarketkotlin.R
 import com.example.foodmarketkotlin.data.model.response.Product
 import com.example.foodmarketkotlin.databinding.FragmentPaymentBinding
 import com.example.foodmarketkotlin.util.parcelableOrNull
+import com.example.foodmarketkotlin.utils.priceIDR
+import com.example.foodmarketkotlin.utils.toRupiah
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
@@ -39,7 +39,7 @@ class PaymentFragment : Fragment() {
         (activity as DetailActivity).toolbarPayment()
         setData()
 
-       binding.btnCheckout.setOnClickListener {
+        binding.btnCheckout.setOnClickListener {
             findNavController().navigate(R.id.action_payment_success)
         }
     }
@@ -56,15 +56,14 @@ class PaymentFragment : Fragment() {
         val currentUser = auth.currentUser?.uid
 
 
-        productData?.let {
-            product ->
+        productData?.let { product ->
             binding.tvTitle.text = product.title
-            binding.tvPrice.text = "Rp ${product.price}"
-            binding.tvHarga.text = "Rp ${product.price}"
+            binding.tvPrice.text = product.priceIDR.toRupiah()
+            binding.tvHarga.text = product.priceIDR.toRupiah()
             binding.textView14.text = "1 items"
-            binding.textView12.text = "Rp ${product.price}"
-            binding.tvTax.text =    "Rp ${product.price}"
-            binding.tvTotal.text = "Rp ${product.price}"
+            binding.textView12.text = product.priceIDR.toRupiah()
+            binding.tvTax.text = product.priceIDR.toRupiah()
+            binding.tvTotal.text = product.priceIDR.toRupiah()
             Glide.with(requireContext())
                 .load(product.thumbnail)
                 .into(binding.ivPoster)
@@ -74,7 +73,11 @@ class PaymentFragment : Fragment() {
             db.collection("users").document(currentUser).addSnapshotListener { document, error ->
 
                 if (error != null) {
-                    Toast.makeText(context, "Gagal mengambil data: ${error.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        "Gagal mengambil data: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@addSnapshotListener
                 }
 

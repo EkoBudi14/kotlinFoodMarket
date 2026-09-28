@@ -40,7 +40,9 @@ android {
     // Optional: Tambahkan ini juga untuk View Binding sebagai alternatif
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
+
 }
 
 dependencies {
@@ -77,6 +79,12 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.analytics)
+
+
+    // Google Play In-App Review
+    implementation(libs.play.review)
+    implementation(libs.play.review.ktx)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

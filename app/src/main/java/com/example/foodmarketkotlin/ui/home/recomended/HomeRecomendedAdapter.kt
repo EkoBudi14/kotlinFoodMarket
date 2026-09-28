@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.foodmarketkotlin.data.model.response.Product
 import com.example.foodmarketkotlin.databinding.ItemHomeVerticalBinding
+import com.example.foodmarketkotlin.utils.priceIDR
+import com.example.foodmarketkotlin.utils.toRupiah
 
 class HomeRecomendedAdapter(
     private var productList: ArrayList<Product> = ArrayList(),
@@ -37,7 +39,7 @@ class HomeRecomendedAdapter(
 
         fun bind(data: Product, callback: ItemAdapterCallback) {
             binding.tvTitle.text = data.title
-            binding.tvPrice.text = "Rp ${data.price.toInt()}"
+            binding.tvPrice.text = data.priceIDR.toRupiah()
             binding.rbFood.rating = data.rating.toFloat()
 
             Glide.with(itemView.context)
