@@ -18,6 +18,17 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // URL backend Vercel (foodmarket-backend-temporary), harus diakhiri "/".
+        // Bisa diganti lewat local.properties: BACKEND_BASE_URL=https://<project>.vercel.app/
+        val localPropsFile = rootProject.file("local.properties")
+        val backendBaseUrl = localPropsFile.takeIf { it.exists() }
+            ?.readLines()
+            ?.firstOrNull { it.trim().startsWith("BACKEND_BASE_URL=") }
+            ?.substringAfter("=")
+            ?.trim()
+            ?: "https://foodmarket-backend-temporary.vercel.app/"
+        buildConfigField("String", "BACKEND_BASE_URL", "\"$backendBaseUrl\"")
     }
 
     buildTypes {
@@ -65,6 +76,7 @@ dependencies {
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     // Coil
     implementation(libs.coil)
