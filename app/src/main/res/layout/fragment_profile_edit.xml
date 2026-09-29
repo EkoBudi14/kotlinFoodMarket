@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.profile.edit.ProfileEditFragment">
+
+    <include
+        android:id="@+id/includedToolbar"
+        layout="@layout/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFF"
+            android:layout_marginTop="24dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="26dp"
+            android:paddingBottom="24dp"
+            android:orientation="vertical">
+
+
+            <TextView
+                style="@style/TextView.PoppinsNormal16sp020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Full Name" />
+
+            <EditText
+                android:id="@+id/etFullName"
+                android:layout_marginTop="6dp"
+                android:padding="10dp"
+                style="@style/EditText.PoppinsNormal14sp020202"
+                android:background="@drawable/shape_rectangle_outline_8_020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type your full name" />
+
+            <!--  Phone  -->
+            <TextView
+                android:layout_marginTop="16dp"
+                style="@style/TextView.PoppinsNormal16sp020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone Number" />
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:inputType="phone"
+                android:layout_marginTop="6dp"
+                android:padding="10dp"
+                style="@style/EditText.PoppinsNormal14sp020202"
+                android:background="@drawable/shape_rectangle_outline_8_020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type your phone number" />
+
+            <!--  Address  -->
+            <TextView
+                android:layout_marginTop="16dp"
+                style="@style/TextView.PoppinsNormal16sp020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Address" />
+
+            <EditText
+                android:id="@+id/etAddress"
+                android:layout_marginTop="6dp"
+                android:padding="10dp"
+                style="@style/EditText.PoppinsNormal14sp020202"
+                android:background="@drawable/shape_rectangle_outline_8_020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type your address" />
+
+            <!--  House No  -->
+            <TextView
+                android:layout_marginTop="16dp"
+                style="@style/TextView.PoppinsNormal16sp020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="House No" />
+
+            <EditText
+                android:id="@+id/etHouseNo"
+                android:layout_marginTop="6dp"
+                android:padding="10dp"
+                style="@style/EditText.PoppinsNormal14sp020202"
+                android:background="@drawable/shape_rectangle_outline_8_020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type your house number" />
+
+            <!--  City  -->
+            <TextView
+                android:layout_marginTop="16dp"
+                style="@style/TextView.PoppinsNormal16sp020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="City" />
+
+            <EditText
+                android:id="@+id/etCity"
+                android:layout_marginTop="6dp"
+                android:padding="10dp"
+                style="@style/EditText.PoppinsNormal14sp020202"
+                android:background="@drawable/shape_rectangle_outline_8_020202"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Type your city" />
+
+            <Button
+                android:id="@+id/btnSaveProfile"
+                android:textAllCaps="false"
+                android:layout_marginTop="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Button.Primary"
+                android:text="Simpan" />
+
+            <Button
+                android:id="@+id/btnDeleteProfile"
+                android:textAllCaps="false"
+                android:layout_marginTop="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Button.Second"
+                android:background="@drawable/shape_rectangle_8_d32f2f"
+                android:text="Hapus Akun" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
