@@ -22,8 +22,29 @@
         android:name="com.example.foodmarketkotlin.ui.detail.PaymentFragment"
         tools:layout="@layout/fragment_payment">
 
+        <action android:id="@+id/action_payment_midtrans"
+            app:destination="@+id/fragmentMidtransPayment"/>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/fragmentMidtransPayment"
+        android:name="com.example.foodmarketkotlin.ui.detail.MidtransPaymentFragment"
+        tools:layout="@layout/fragment_midtrans_payment">
+
+        <argument
+            android:name="orderId"
+            app:argType="string" />
+
+        <argument
+            android:name="redirectUrl"
+            app:argType="string" />
+
+        <!-- Setelah bayar, tombol back tidak kembali ke halaman Midtrans / Payment -->
         <action android:id="@+id/action_payment_success"
-            app:destination="@+id/fragmentPaymentSuccess"/>
+            app:destination="@+id/fragmentPaymentSuccess"
+            app:popUpTo="@+id/fragmentDetail" />
 
     </fragment>
 
