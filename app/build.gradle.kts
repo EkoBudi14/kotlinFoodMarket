@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -22,15 +20,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // URL backend Vercel (foodmarket-backend-temporary), harus diakhiri "/".
-        // Isi di local.properties: BACKEND_BASE_URL=https://<project>.vercel.app/
-        val localProps = Properties().apply {
-            val file = rootProject.file("local.properties")
-            if (file.exists()) file.inputStream().use { load(it) }
-        }
-        val backendBaseUrl = localProps.getProperty(
-            "BACKEND_BASE_URL",
-            "https://your-project.vercel.app/"
-        )
+        // Bisa diganti lewat local.properties: BACKEND_BASE_URL=https://<project>.vercel.app/
+        val localPropsFile = rootProject.file("local.properties")
+        val backendBaseUrl = localPropsFile.takeIf { it.exists() }
+            ?.readLines()
+            ?.firstOrNull { it.trim().startsWith("BACKEND_BASE_URL=") }
+            ?.substringAfter("=")
+            ?.trim()
+            ?: "https://foodmarket-backend-temporary.vercel.app/"
         buildConfigField("String", "BACKEND_BASE_URL", "\"$backendBaseUrl\"")
     }
 

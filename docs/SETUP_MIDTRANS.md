@@ -4,7 +4,7 @@ Panduan ini untuk menyambungkan app Android **kotlinFoodMarket** ke backend
 **foodmarket-backend-temporary** (Vercel) supaya tombol **Checkout Now** membuka
 halaman pembayaran Midtrans (Snap).
 
-Semua kode di bawah sama persis dengan commit `7aa814f` di branch `midtrans`.
+Semua kode di bawah sama persis dengan isi branch `midtrans`.
 
 ---
 
@@ -116,53 +116,64 @@ Versinya ikut `coroutines = "1.7.3"` yang sudah ada di baris 19, jadi nggak perl
 
 📄 **File:** `app/build.gradle.kts` (yang di dalam folder `app`, **bukan** yang di root project)
 
-Ada 3 perubahan:
+Ada 2 perubahan:
 
-**a. Baris 1–2**: tambahkan import di paling atas file, sebelum `plugins {`:
-
-```kotlin
-  1  import java.util.Properties
-  2  
-  3  plugins {
-```
-
-**b. Baris 24–34**: di dalam `defaultConfig { ... }`, setelah baris `testInstrumentationRunner`,
-tambahkan kode yang membaca URL backend dari `local.properties`:
+**a. Baris 22–31**: di dalam `defaultConfig { ... }`, setelah baris `testInstrumentationRunner`,
+tambahkan kode yang menentukan URL backend:
 
 ```kotlin
- 22          testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
- 23  
- 24          // URL backend Vercel (foodmarket-backend-temporary), harus diakhiri "/".
- 25          // Isi di local.properties: BACKEND_BASE_URL=https://<project>.vercel.app/
- 26          val localProps = Properties().apply {
- 27              val file = rootProject.file("local.properties")
- 28              if (file.exists()) file.inputStream().use { load(it) }
- 29          }
- 30          val backendBaseUrl = localProps.getProperty(
- 31              "BACKEND_BASE_URL",
- 32              "https://your-project.vercel.app/"
- 33          )
- 34          buildConfigField("String", "BACKEND_BASE_URL", "\"$backendBaseUrl\"")
- 35      }
+ 20          testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+ 21  
+ 22          // URL backend Vercel (foodmarket-backend-temporary), harus diakhiri "/".
+ 23          // Bisa diganti lewat local.properties: BACKEND_BASE_URL=https://<project>.vercel.app/
+ 24          val localPropsFile = rootProject.file("local.properties")
+ 25          val backendBaseUrl = localPropsFile.takeIf { it.exists() }
+ 26              ?.readLines()
+ 27              ?.firstOrNull { it.trim().startsWith("BACKEND_BASE_URL=") }
+ 28              ?.substringAfter("=")
+ 29              ?.trim()
+ 30              ?: "https://foodmarket-backend-temporary.vercel.app/"
+ 31          buildConfigField("String", "BACKEND_BASE_URL", "\"$backendBaseUrl\"")
+ 32      }
 ```
 
+Baris yang di-copy:
+
+```kotlin
+        // URL backend Vercel (foodmarket-backend-temporary), harus diakhiri "/".
+        // Bisa diganti lewat local.properties: BACKEND_BASE_URL=https://<project>.vercel.app/
+        val localPropsFile = rootProject.file("local.properties")
+        val backendBaseUrl = localPropsFile.takeIf { it.exists() }
+            ?.readLines()
+            ?.firstOrNull { it.trim().startsWith("BACKEND_BASE_URL=") }
+            ?.substringAfter("=")
+            ?.trim()
+            ?: "https://foodmarket-backend-temporary.vercel.app/"
+        buildConfigField("String", "BACKEND_BASE_URL", "\"$backendBaseUrl\"")
+```
+
+Cara bacanya: kalau di `local.properties` ada baris `BACKEND_BASE_URL=...`, URL itu yang dipakai.
+Kalau nggak ada, pakai `https://foodmarket-backend-temporary.vercel.app/` (baris 30).
 Hasilnya, di kode Kotlin kita bisa memanggil `BuildConfig.BACKEND_BASE_URL`.
-`buildConfig = true` di baris 57 **sudah ada** dari sebelumnya, jangan dihapus
+
+> ⚠️ **Jangan** pakai `Properties()` / `java.util.Properties()` di sini. Di dalam blok `android { }`,
+> kata `java` dibaca Gradle sebagai pengaturan `java { }`, bukan package Java, sehingga
+> `util` dan `load` jadi merah. Kode di atas sengaja nggak butuh class itu dan nggak butuh `import`.
+
+`buildConfig = true` di baris 54 **sudah ada** dari sebelumnya, jangan dihapus
 (tanpa itu class `BuildConfig` nggak dibuat).
 
-**c. Baris 82**: di bagian `dependencies`, di bawah `kotlinx.coroutines.android`:
+**b. Baris 79**: di bagian `dependencies`, di bawah `kotlinx.coroutines.android`:
 
 ```kotlin
- 80      // Coroutines
- 81      implementation(libs.kotlinx.coroutines.android)
- 82      implementation(libs.kotlinx.coroutines.play.services)
+ 77      // Coroutines
+ 78      implementation(libs.kotlinx.coroutines.android)
+ 79      implementation(libs.kotlinx.coroutines.play.services)
 ```
 
-Isi lengkap `app/build.gradle.kts` (107 baris) supaya bisa dicocokkan, atau ganti seluruh isinya dengan ini:
+Isi lengkap `app/build.gradle.kts` (104 baris) supaya bisa dicocokkan, atau ganti seluruh isinya dengan ini:
 
 ```kotlin
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -185,15 +196,14 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // URL backend Vercel (foodmarket-backend-temporary), harus diakhiri "/".
-        // Isi di local.properties: BACKEND_BASE_URL=https://<project>.vercel.app/
-        val localProps = Properties().apply {
-            val file = rootProject.file("local.properties")
-            if (file.exists()) file.inputStream().use { load(it) }
-        }
-        val backendBaseUrl = localProps.getProperty(
-            "BACKEND_BASE_URL",
-            "https://your-project.vercel.app/"
-        )
+        // Bisa diganti lewat local.properties: BACKEND_BASE_URL=https://<project>.vercel.app/
+        val localPropsFile = rootProject.file("local.properties")
+        val backendBaseUrl = localPropsFile.takeIf { it.exists() }
+            ?.readLines()
+            ?.firstOrNull { it.trim().startsWith("BACKEND_BASE_URL=") }
+            ?.substringAfter("=")
+            ?.trim()
+            ?: "https://foodmarket-backend-temporary.vercel.app/"
         buildConfigField("String", "BACKEND_BASE_URL", "\"$backendBaseUrl\"")
     }
 
@@ -296,8 +306,11 @@ Baris yang di-copy:
 
 📄 **File:** `local.properties` (di **root** project, sejajar `settings.gradle.kts`)
 
-File ini **sengaja tidak masuk git** (ada di `.gitignore`), jadi setiap laptop harus isi sendiri.
-Tambahkan baris ini di paling bawah. Ganti dengan domain Vercel kamu, dan **wajib diakhiri `/`**:
+Langkah ini **opsional**: kalau domain Vercel kamu memang `foodmarket-backend-temporary.vercel.app`,
+lewati saja (sudah jadi nilai default di Langkah 2). Isi hanya kalau domainnya beda.
+
+File ini **sengaja tidak masuk git** (ada di `.gitignore`). Tambahkan baris ini di paling bawah,
+ganti dengan domain Vercel kamu, dan **wajib diakhiri `/`**:
 
 ```properties
 BACKEND_BASE_URL=https://nama-project-kamu.vercel.app/
@@ -1412,11 +1425,12 @@ Untuk GoPay / QRIS di Sandbox, pakai simulator: https://simulator.sandbox.midtra
 
 | Gejala | Penyebab & solusi |
 |---|---|
+| `Properties`, `util` atau `load` merah di `build.gradle.kts` | Pakai kode Langkah 2a yang baru (tanpa `Properties`), lalu Sync |
 | `Unresolved reference: BuildConfig` / `BACKEND_BASE_URL` | Langkah 2 belum atau belum Sync. **File → Sync Project with Gradle Files**, lalu **Build → Rebuild Project** |
-| `Unresolved reference: await` | Langkah 1 atau 2c belum, lalu Sync |
+| `Unresolved reference: await` | Langkah 1 atau 2b belum, lalu Sync |
 | `Unresolved reference: FragmentMidtransPaymentBinding` | Nama layout harus persis `fragment_midtrans_payment.xml` (Langkah 11), lalu Rebuild |
 | `Unresolved reference: action_payment_midtrans` | Langkah 13 belum |
-| Toast `Unable to resolve host "your-project.vercel.app"` | `BACKEND_BASE_URL` belum diisi di `local.properties` (Langkah 4). Sync lalu Run ulang |
+| Toast `Unable to resolve host "..."` | Domain Vercel salah. Cek domain di vercel.com, isi `BACKEND_BASE_URL` di `local.properties` (Langkah 4), Sync lalu Run ulang |
 | Crash `baseUrl must end in /` | URL di `local.properties` kurang `/` di akhir |
 | Toast `Invalid or missing Firebase ID token` | User belum login, atau `FIREBASE_SERVICE_ACCOUNT` di Vercel dari project Firebase lain |
 | Toast `Gagal membuat transaksi (500)` | Lihat log di Vercel (**Deployments → Logs**). Biasanya `MIDTRANS_SERVER_KEY` salah / kosong |
