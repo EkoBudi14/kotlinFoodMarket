@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
+
+    <ImageView
+        android:id="@+id/ivPoster"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_sample_product2" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/TextView.PoppinsNormal16sp020202"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@+id/tvStatus"
+        app:layout_constraintStart_toEndOf="@+id/ivPoster"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Cherry Healthy" />
+
+    <TextView
+        android:id="@+id/tvInfo"
+        style="@style/TextView.PoppinsNormal14sp8D92A3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/tvDate"
+        app:layout_constraintStart_toEndOf="@+id/ivPoster"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        tools:text="1 items • Rp.186.000" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        style="@style/TextView.PoppinsNormal14sp1ABC9C"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Paid" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        style="@style/TextView.PoppinsNormal14sp8D92A3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:textSize="10sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvInfo"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="30 Sep 2026, 14:20" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

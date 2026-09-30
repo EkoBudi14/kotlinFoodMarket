@@ -17,9 +17,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.foodmarketkotlin.R
 import com.example.foodmarketkotlin.databinding.FragmentMidtransPaymentBinding
+import com.example.foodmarketkotlin.ui.MainActivity
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.firestore
+import java.net.URISyntaxException
 
 
 class MidtransPaymentFragment : Fragment() {
@@ -56,8 +58,7 @@ class MidtransPaymentFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        orderListener?.remove()
-        orderListener = null
+        stopListening()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -81,10 +82,14 @@ class MidtransPaymentFragment : Fragment() {
 
     private fun openExternalIfNeeded(uri: Uri): Boolean {
         val scheme = uri.scheme ?: return false
+        if (isFinishRedirect(uri)) {
+            handleFinishRedirect(uri.getQueryParameter("transaction_status"))
+            return true
+        }
         if (scheme == "http" || scheme == "https") return false
 
-        try {
-            val inten = if (scheme == "intent") {
+        val intent = try {
+            if (scheme == "intent") {
                 Intent.parseUri(uri.toString(), Intent.URI_INTENT_SCHEME).apply {
                     addCategory(Intent.CATEGORY_BROWSABLE)
                     component = null
@@ -93,38 +98,90 @@ class MidtransPaymentFragment : Fragment() {
             } else {
                 Intent(Intent.ACTION_VIEW, uri)
             }
+        } catch (e: URISyntaxException) {
+            Toast.makeText(context, "Link pembayaran tidak valid", Toast.LENGTH_SHORT).show()
+            return true
+        }
 
-            try {
-                startActivity(inten)
-            } catch (e: ActivityNotFoundException) {
-                val fallbackUrl = inten.getStringExtra("browser_fallback_url")
-                if (fallbackUrl != null) {
-                    binding.webView.loadUrl(fallbackUrl)
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Aplikasi pembayaran tidak terpasang",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+
+        try {
+            startActivity(intent)
         } catch (e: ActivityNotFoundException) {
-            Toast.makeText(context, "Tidak bisa membuka link pembayaran", Toast.LENGTH_SHORT).show()
+            val fallbackUrl = intent.getStringExtra("browser_fallback_url")
+            if (fallbackUrl != null) {
+                binding.webView.loadUrl(fallbackUrl)
+            } else {
+                Toast.makeText(
+                    context,
+                    "Tidak ditemukan aplikasi untuk membuka link ini",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
         return true
+    }
+
+    // Snap redirect ke Finish/Unfinish/Error URL (dashboard Midtrans) dengan query
+    // order_id & transaction_status. URL itu bukan halaman asli, jadi jangan di-load.
+    private fun isFinishRedirect(uri: Uri): Boolean {
+        val host = uri.host.orEmpty()
+        if (host.endsWith("midtrans.com") || host.endsWith("veritrans.co.id")) return false
+        return !uri.isOpaque &&
+            uri.getQueryParameter("order_id") != null &&
+            uri.getQueryParameter("transaction_status") != null
+    }
+
+    private fun handleFinishRedirect(transactionStatus: String?) {
+        val nav = findNavController()
+        if (nav.currentDestination?.id != R.id.fragmentMidtransPayment) return
+
+        when (transactionStatus) {
+            "settlement", "capture" -> {
+                stopListening()
+                nav.navigate(R.id.action_payment_success)
+            }
+
+            "pending" -> {
+                Toast.makeText(
+                    context,
+                    "Menunggu pembayaran, cek status di halaman Order",
+                    Toast.LENGTH_SHORT
+                ).show()
+                openOrderPage()
+            }
+
+            else -> {
+                Toast.makeText(
+                    context,
+                    "Pembayaran gagal / dibatalkan",
+                    Toast.LENGTH_SHORT
+                ).show()
+                openOrderPage()
+            }
+        }
+    }
+
+    // Order sudah tersimpan di Firestore sejak checkout, jadi setelah keluar dari Midtrans
+    // user diarahkan ke tab Order (bukan balik ke Payment) untuk pantau statusnya.
+    private fun openOrderPage() {
+        stopListening()
+        val intent = Intent(requireContext(), MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(MainActivity.EXTRA_OPEN_ORDER, true)
+        }
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     private fun setupBackPress() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (binding.webView.canGoBack()) {
-                        binding.webView.goBack()
-                    } else {
-                        findNavController().popBackStack()
-                    }
-                }
+                // Sengaja tidak pakai webView.goBack(): Snap menyimpan banyak entri history
+                // (redirect & route internal), jadi user harus back berkali-kali. Navigasi
+                // di dalam Snap cukup lewat tombol back milik halaman Snap sendiri.
+                // Status belum PAID di sini (kalau sudah, listener sudah pindah ke halaman sukses).
+                override fun handleOnBackPressed() = openOrderPage()
             }
         )
     }
@@ -136,32 +193,44 @@ class MidtransPaymentFragment : Fragment() {
         orderListener =
             Firebase.firestore.collection("orders").document(id)
                 .addSnapshotListener { snapshot, error ->
-                    if (error != null || snapshot == null || _binding == null) {
+                    if (_binding == null) return@addSnapshotListener
+                    if (error != null) {
+                        Toast.makeText(
+                            context,
+                            "Gagal cek status: ${error.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         return@addSnapshotListener
                     }
+                    if (snapshot == null || !snapshot.exists()) return@addSnapshotListener
+
+                    val nav = findNavController()
+                    if (nav.currentDestination?.id != R.id.fragmentMidtransPayment) return@addSnapshotListener
 
                     when (snapshot.getString("status")) {
                         STATUS_PAID -> {
-                            orderListener?.remove()
-                            orderListener = null
-
-                            findNavController().navigate(R.id.action_payment_success)
+                            stopListening()
+                            nav.navigate(R.id.action_payment_success)
                         }
 
-                        STATUS_EXPIRED -> {
-                            orderListener?.remove()
-                            orderListener = null
+                        STATUS_EXPIRED, STATUS_CANCELLED -> {
+                            stopListening()
                             Toast.makeText(
                                 context,
                                 "Pembayaran dibatalkan / kedaluwarsa",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            findNavController().popBackStack()
+                            nav.popBackStack()
                         }
                     }
                 }
 
 
+    }
+
+    private fun stopListening() {
+        orderListener?.remove()
+        orderListener = null
     }
 
     override fun onDestroyView() {
