@@ -117,31 +117,30 @@ class PaymentFragment : Fragment() {
         }
 
         if (currentUser != null) {
-            db.collection("users").document(currentUser).addSnapshotListener { document, error ->
+            db.collection("users").document(currentUser).get()
+                .addOnSuccessListener { document ->
 
-                if (error != null) {
+                    val b = _binding ?: return@addOnSuccessListener
+
+                    if (!document.exists()) {
+                        Toast.makeText(context, "Data user tidak ditemukan", Toast.LENGTH_SHORT)
+                            .show()
+                        return@addOnSuccessListener
+                    }
+
+                    b.tvName.text = document.getString("fullName") ?: document.getString("name")
+                    b.textPhoneNo.text = document.getString("phone")
+                    b.tvAddress.text = document.getString("address")
+                    b.tvCity.text = document.getString("city")
+                }
+
+                .addOnFailureListener { e ->
                     Toast.makeText(
                         context,
-                        "Gagal mengambil data: ${error.message}",
+                        "Gagal mengambil data: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
-                    return@addSnapshotListener
                 }
-
-                if (document != null && document.exists()) {
-                    val name = document.getString("fullName") ?: document.getString("name")
-                    val phone = document.getString("phone")
-                    val address = document.getString("address")
-                    val city = document.getString("city")
-
-                    binding.tvName.text = name
-                    binding.textPhoneNo.text = phone
-                    binding.tvAddress.text = address
-                    binding.tvCity.text = city
-                } else {
-                    Toast.makeText(context, "Data user tidak ditemukan", Toast.LENGTH_SHORT).show()
-                }
-            }
         } else {
             Toast.makeText(context, "User tidak ditemukan", Toast.LENGTH_SHORT).show()
         }

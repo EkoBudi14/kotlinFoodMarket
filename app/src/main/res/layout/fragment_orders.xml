@@ -1,40 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center"
+    android:layout_height="match_parent"
     tools:context=".ui.order.OrderFragment">
 
-  <ImageView
-      android:layout_marginTop="100dp"
-      android:id="@+id/ivLogo"
-      android:layout_width="200dp"
-      android:layout_height="201dp"
-      android:src="@drawable/ic_empty_order"/>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/layoutOrders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            style="@style/TextView.PoppinsNormal22sp020202"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="30dp"
+            android:text="Your Orders" />
+
+        <TextView
+            style="@style/TextView.PoppinsNormal14sp8D92A3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="16dp"
+            android:text="Wait for the best meal" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvOrders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_order" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="200dp"
+            android:layout_height="201dp"
+            android:layout_marginTop="100dp"
+            android:src="@drawable/ic_empty_order" />
+
+        <TextView
+            style="@style/TextView.PoppinsNormal20sp8D92A3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Ouch! Hungry" />
+
+        <TextView
+            style="@style/TextView.PoppinsNormal14sp8D92A3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Seem like you have not\nordered any food yet"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/btnFindFoods"
+            style="@style/Button.Primary"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Find Foods"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ouch! Hungry"
-        style="@style/TextView.PoppinsNormal20sp8D92A3"
-        android:layout_marginTop="30dp"/>
+        android:layout_gravity="center" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seem like you have not\nordered any food yet"
-        android:textAlignment="center"
-        style="@style/TextView.PoppinsNormal14sp8D92A3"
-        android:layout_marginTop="6dp"/>
-    
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        style="@style/Button.Primary"
-        android:text="Find Foods"
-        android:textAllCaps="false"
-        android:layout_marginTop="30dp"/>
-</LinearLayout>
+</FrameLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

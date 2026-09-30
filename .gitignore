@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Folder sementara plugin Claude Code (caveman), bukan bagian project
+_caveman_tmp/
