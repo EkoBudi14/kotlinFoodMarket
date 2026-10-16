@@ -28,10 +28,10 @@ fun ImageView.loadThumbnail(url: String?, radiusDp: Int = 12) {
 }
 
 /**
- * Loads a cover image with a smooth cross-fade, scaling the whole image to
- * fit without cropping. Used for detail/header images where the full subject
- * should stay visible (no zoom-in crop). Transparent placeholder for the same
- * reason as [loadThumbnail].
+ * Loads a cover image with a smooth cross-fade, filling the view edge-to-edge
+ * via center-crop. Meant for a fixed-height header area (not a full-screen
+ * view) so the crop stays gentle. Transparent placeholder for the same reason
+ * as [loadThumbnail].
  */
 fun ImageView.loadCover(url: String?) {
     Glide.with(this)
@@ -39,6 +39,6 @@ fun ImageView.loadCover(url: String?) {
         .placeholder(android.R.color.transparent)
         .error(android.R.color.transparent)
         .transition(DrawableTransitionOptions.withCrossFade())
-        .fitCenter()
+        .centerCrop()
         .into(this)
 }
