@@ -1,5 +1,6 @@
 package com.example.foodmarketkotlin.ui.profile.account
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodmarketkotlin.R
 import com.example.foodmarketkotlin.data.model.dummy.ProfileMenuModel
+import com.example.foodmarketkotlin.ui.auth.AuthActivity
 import com.example.foodmarketkotlin.ui.profile.ProfileMenuAdapter
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 class ProfileAccountFragment : Fragment(), ProfileMenuAdapter.ItemAdapterCallback {
 
@@ -49,13 +53,27 @@ class ProfileAccountFragment : Fragment(), ProfileMenuAdapter.ItemAdapterCallbac
         menuArrayList.add(ProfileMenuModel("Home Address"))
         menuArrayList.add(ProfileMenuModel("Security"))
         menuArrayList.add(ProfileMenuModel("Payments"))
+        menuArrayList.add(ProfileMenuModel("Log out"))
     }
+
 
     override fun onCLick(v: View, data: ProfileMenuModel) {
         if (data.title == "Edit Profile") {
             Navigation.findNavController(v).navigate(R.id.profileEditFragment)
+        } else if (data.title == "Log out") {
+            logoutAccount()
         } else {
             Toast.makeText(requireContext(), "Clicked: ${data.title}", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun logoutAccount() {
+        Firebase.auth.signOut()
+        Toast.makeText(requireContext(), "Logout berhasil", Toast.LENGTH_SHORT).show()
+
+        val intent = Intent(activity, AuthActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        activity?.finish()
     }
 }
