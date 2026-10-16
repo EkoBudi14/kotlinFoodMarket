@@ -10,11 +10,11 @@ The app is written in **Kotlin** with the **MVVM** pattern, uses **Firebase** fo
 
 | Home | Food Detail | Payment Summary | Your Orders |
 |:---:|:---:|:---:|:---:|
-| ![home](screenshots/home.png) | ![food detail](screenshots/food_detail.png) | ![payment summary](screenshots/payment_summary.png) | ![orders](screenshots/orders.png) |
+| <img src="screenshots/home.png" width="200"> | <img src="screenshots/food_detail.png" width="200"> | <img src="screenshots/payment_summary.png" width="200"> | <img src="screenshots/orders.png" width="200"> |
 
 | Midtrans Payment Methods | Virtual Account (BCA) | Profile |
 |:---:|:---:|:---:|
-| ![midtrans payment methods](screenshots/midtrans_payment_methods.png) | ![midtrans virtual account](screenshots/midtrans_virtual_account.png) | ![profile](screenshots/profile.png) |
+| <img src="screenshots/midtrans_payment_methods.png" width="200"> | <img src="screenshots/midtrans_virtual_account.png" width="200"> | <img src="screenshots/profile.png" width="200"> |
 
 ---
 
