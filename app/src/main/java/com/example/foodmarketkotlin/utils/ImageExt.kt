@@ -23,8 +23,9 @@ fun ImageView.loadThumbnail(url: String?, radiusDp: Int = 12) {
 }
 
 /**
- * Loads a full-bleed cover image with a smooth cross-fade and center-crop.
- * Used for detail/header images that fill the width.
+ * Loads a cover image with a smooth cross-fade, scaling the whole image to
+ * fit without cropping. Used for detail/header images where the full subject
+ * should stay visible (no zoom-in crop).
  */
 fun ImageView.loadCover(url: String?) {
     Glide.with(this)
@@ -32,6 +33,6 @@ fun ImageView.loadCover(url: String?) {
         .placeholder(R.drawable.ic_picture_empty)
         .error(R.drawable.ic_picture_empty)
         .transition(DrawableTransitionOptions.withCrossFade())
-        .centerCrop()
+        .fitCenter()
         .into(this)
 }
