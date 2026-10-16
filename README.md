@@ -1,6 +1,6 @@
-# FoodMarket — Food Ordering App (Native Android, Kotlin)
+# Harvo — Food Ordering App (Native Android, Kotlin)
 
-**FoodMarket** is a native Android app for ordering food and groceries. Users sign up with their address, browse food by category, see details and prices, then check out and pay through **Midtrans** (virtual account, e-wallet, card, QRIS and more). After paying, the order status updates **in real time** from *Waiting payment* to *Paid* without refreshing.
+**Harvo** is a native Android app for ordering food and groceries. Users sign up with their address, browse food by category, see details and prices, then check out and pay through **Midtrans** (virtual account, e-wallet, card, QRIS and more). After paying, the order status updates **in real time** from *Waiting payment* to *Paid* without refreshing.
 
 The app is written in **Kotlin** with the **MVVM** pattern, uses **Firebase** for authentication and user data, **Retrofit** for REST APIs, and a small **Vercel backend** that creates Midtrans transactions and receives payment notifications.
 
@@ -50,7 +50,7 @@ The app is written in **Kotlin** with the **MVVM** pattern, uses **Firebase** fo
 - Profile photo, name and email
 - **Account** tab: edit profile, home address, security and payments
 - **Edit profile** and **delete account**
-- **FoodMarket** tab: rate the app with **Google Play In-App Review**
+- **Harvo** tab: rate the app with **Google Play In-App Review**
 
 ---
 
@@ -90,7 +90,7 @@ app/src/main/java/com/example/foodmarketkotlin/
 │   ├── home/        # home + New Taste / Popular / Recommended tabs
 │   ├── detail/      # food detail, payment, Midtrans payment, payment success
 │   ├── order/       # order list
-│   ├── profile/     # profile, account menu, FoodMarket menu, edit profile
+│   ├── profile/     # profile, account menu, Harvo menu, edit profile
 │   └── splashscreen/
 └── utils/           # price formatting, tax and total calculation, helpers
 ```
@@ -129,7 +129,7 @@ app/src/main/java/com/example/foodmarketkotlin/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/EkoBudi14/kotlinFoodMarket.git
+git clone https://github.com/EkoBudi14/kotlinHarvo.git
 ```
 
 2. Open the project in Android Studio and let Gradle sync.
