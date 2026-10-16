@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_marginStart="24dp"
     android:layout_width="200dp"
@@ -10,7 +11,8 @@
         android:id="@+id/ivPoster"
         android:layout_width="200dp"
         android:layout_height="140dp"
-        android:src="@drawable/iv_sample_product"/>
+        android:scaleType="centerCrop"
+        tools:src="@drawable/iv_sample_product"/>
     
     <TextView
         android:id="@+id/tvTitleItem"

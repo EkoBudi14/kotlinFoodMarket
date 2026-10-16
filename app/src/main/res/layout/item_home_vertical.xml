@@ -14,7 +14,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_sample_product2" />
+        tools:srcCompat="@drawable/ic_sample_product2" />
 
     <TextView
         android:id="@+id/tvTitle"
