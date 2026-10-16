@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.foodmarketkotlin.data.model.response.Product
+import com.example.foodmarketkotlin.utils.loadThumbnail
 import com.example.foodmarketkotlin.databinding.ItemHomeHorizontalBinding
 
 class HomeAdapter(
@@ -39,9 +39,7 @@ class HomeAdapter(
             binding.tvTitleItem.text = data.title
             binding.rbFood.rating = data.rating.toFloat()
 
-            Glide.with(itemView.context)
-                .load(data.thumbnail)
-                .into(binding.ivPoster)
+            binding.ivPoster.loadThumbnail(data.thumbnail)
 
             itemView.setOnClickListener {
                 callback.onClick(it, data)

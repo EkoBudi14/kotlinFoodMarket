@@ -8,8 +8,8 @@ import androidx.core.content.IntentCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.example.foodmarketkotlin.R
+import com.example.foodmarketkotlin.utils.loadCover
 import com.example.foodmarketkotlin.data.model.response.Product
 import com.example.foodmarketkotlin.databinding.FragmentDetailBinding
 import com.example.foodmarketkotlin.utils.priceIDR
@@ -64,9 +64,7 @@ class DetailFragment : Fragment() {
             binding.tvIngridientsDetail.text = product.brand ?: "-"
             binding.tvTotalDetail.text = product.priceIDR.toRupiah()
             binding.ratingBar.rating = product.rating.toFloat()
-            Glide.with(requireContext())
-                .load(product.thumbnail)
-                .into(binding.imageView4)
+            binding.imageView4.loadCover(product.thumbnail)
         }
     }
 

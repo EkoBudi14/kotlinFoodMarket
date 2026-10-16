@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.foodmarketkotlin.data.model.response.Order
 import com.example.foodmarketkotlin.databinding.ItemOrderBinding
+import com.example.foodmarketkotlin.utils.loadThumbnail
 import com.example.foodmarketkotlin.utils.toRupiah
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -38,9 +38,7 @@ class OrderAdapter : ListAdapter<Order, OrderAdapter.ViewHolder>(DIFF) {
             binding.tvStatus.text = label
             binding.tvStatus.setTextColor(color)
 
-            Glide.with(itemView.context)
-                .load(order.thumbnail)
-                .into(binding.ivPoster)
+            binding.ivPoster.loadThumbnail(order.thumbnail)
         }
     }
 

@@ -12,8 +12,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.example.foodmarketkotlin.R
+import com.example.foodmarketkotlin.utils.loadThumbnail
 import com.example.foodmarketkotlin.data.model.response.Product
 import com.example.foodmarketkotlin.databinding.FragmentPaymentBinding
 import com.example.foodmarketkotlin.util.parcelableOrNull
@@ -111,9 +111,7 @@ class PaymentFragment : Fragment() {
             binding.textView12.text = DRIVER_FEE.toRupiah()
             binding.tvTax.text = taxOf(subtotal).toRupiah()
             binding.tvTotal.text = totalOf(subtotal).toRupiah()
-            Glide.with(requireContext())
-                .load(product.thumbnail)
-                .into(binding.ivPoster)
+            binding.ivPoster.loadThumbnail(product.thumbnail)
         }
 
         if (currentUser != null) {
