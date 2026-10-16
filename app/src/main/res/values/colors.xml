@@ -2,4 +2,20 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Fresh Harvest palette -->
+    <color name="primary">#2E9E5B</color>
+    <color name="primary_dark">#237A46</color>
+    <color name="accent">#FFB703</color>
+    <color name="on_primary">#FFFFFF</color>
+
+    <color name="background">#F7F9F4</color>
+    <color name="surface">#FFFFFF</color>
+
+    <color name="text_primary">#1B2B1F</color>
+    <color name="text_secondary">#8D92A3</color>
+
+    <color name="rating_active">#FFB703</color>
+    <color name="rating_inactive">#ECECEC</color>
+    <color name="nav_inactive">#E2E2E2</color>
 </resources>
