@@ -34,7 +34,7 @@
         style="@style/TextView.PoppinsNormal16sp020202"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email Address" />
+        android:text="Password" />
 
     <EditText
         android:id="@+id/passwordTypeSignIn"

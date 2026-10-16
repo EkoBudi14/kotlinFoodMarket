@@ -9,7 +9,7 @@
         android:id="@+id/rcListProfile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="@color/surface"
         android:paddingTop="16dp"
         android:clipToPadding="false"
         tools:listitem="@layout/item_menu_profile"/>
